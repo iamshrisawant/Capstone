@@ -110,5 +110,111 @@
     "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
     "humanReply": "Hello! How can I assist you with your delivery today? Please provide your order number or a specific question.",
     "timestamp": "2025-07-31T00:29:32.048Z"
+  },
+  {
+    "userQuery": "Tell me about my products.",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T03:03:06.723Z"
+  },
+  {
+    "userQuery": "The 4k Ultra HD Smart TV",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T03:04:20.200Z"
+  },
+  {
+    "userQuery": "What can I ask you about?",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T03:04:23.707Z"
+  },
+  {
+    "userQuery": "What is my customer id?",
+    "llmPlan": {
+      "intent": "user_id",
+      "cypher": "MATCH (u:User {id: $userId}) RETURN u.id AS userId"
+    },
+    "dbResult": null,
+    "llmReply": "I encountered an issue retrieving information from our database. Please try again in a moment or consider rephrasing your query.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T04:24:04.689Z"
+  },
+  {
+    "userQuery": "What products have I purchased?",
+    "llmPlan": {
+      "intent": "user_purchased_products",
+      "cypher": "MATCH (u:User {id: $userId})-[:PLACED]->(o:Order)-[r:CONTAINS]->(p:Product) RETURN p.name AS productName, r.quantity AS quantity, p.price AS itemPrice, o.id AS orderId, o.orderDate AS orderDate ORDER BY o.orderDate DESC, p.name ASC"
+    },
+    "dbResult": null,
+    "llmReply": "I encountered an issue retrieving information from our database. Please try again in a moment or consider rephrasing your query.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T04:24:56.954Z"
+  },
+  {
+    "userQuery": "Tell me some reviews on some of these products.",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T04:25:42.274Z"
+  },
+  {
+    "userQuery": "But there's a coffee product listed on the site.",
+    "llmPlan": {
+      "intent": "fallback",
+      "params": {}
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T04:29:57.419Z"
+  },
+  {
+    "userQuery": "Can you tell me about my cart?",
+    "llmPlan": {
+      "intent": "fallback",
+      "params": {}
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T04:41:49.470Z"
+  },
+  {
+    "userQuery": "What can I chat with you about?",
+    "llmPlan": {
+      "intent": "fallback",
+      "params": {}
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T04:42:12.259Z"
+  },
+  {
+    "userQuery": "Why is it pending?",
+    "llmPlan": {
+      "intent": "fallback",
+      "params": {}
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T04:43:11.001Z"
   }
 ]

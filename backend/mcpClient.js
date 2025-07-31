@@ -6,9 +6,10 @@ const MCP_URL = process.env.MCP_URL || 'http://localhost:5000'; // Default MCP U
 
 /**
  * Sends a request to the MCP server to run a Cypher query.
- * @param {object} payload The payload containing 'tool' and 'cypher' properties.
+ * @param {object} payload The payload containing 'tool', 'cypher', and optionally 'params' properties.
  * @param {string} payload.tool Should be "run-neo4j-cypher".
  * @param {string} payload.cypher The Cypher query string to execute.
+ * @param {object} [payload.params={}] Optional parameters for the Cypher query.
  * @returns {Promise<Array<Object>>} A promise that resolves to the result from the Neo4j query.
  * @throws {Error} If the MCP request fails.
  */

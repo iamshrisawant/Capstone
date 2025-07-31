@@ -3,51 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Delivery Support</title>
+    <title>AI E-commerce Store</title>
     <!-- Tailwind CSS CDN for quick styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for Inter font and basic layout */
         body {
             font-family: "Inter", sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
         }
-        /* Ensure chat container scrolls properly */
-        #chat-container {
+        /* Ensure chat message container scrolls properly */
+        #chat-messages {
             overflow-y: auto;
             scroll-behavior: smooth;
+            flex-grow: 1; /* Allows chat to take available space */
+        }
+        .message-wrapper {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        .user-message-bubble {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 1.5rem; /* rounded-xl */
+            border-bottom-right-radius: 0; /* rounded-br-none */
+            max-width: 75%;
+            margin-left: auto; /* Aligns to right */
+        }
+        .ai-message-bubble {
+            background-color: #e5e7eb; /* gray-200 */
+            color: #1f2937; /* gray-800 */
+            padding: 0.75rem 1rem;
+            border-radius: 1.5rem; /* rounded-xl */
+            border-bottom-left-radius: 0; /* rounded-bl-none */
+            max-width: 75%;
+            margin-right: auto; /* Aligns to left */
+        }
+        /* Chatbot overlay specific styles */
+        #chatbot-bubble {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000; /* Ensure it's on top */
+            cursor: pointer;
+        }
+        #chatbot-overlay {
+            position: fixed;
+            bottom: 6rem; /* Adjust based on bubble height */
+            right: 1.5rem;
+            width: 90%; /* Responsive width */
+            max-width: 400px; /* Max width for desktop */
+            height: 70%; /* Responsive height */
+            max-height: 600px; /* Max height */
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Ensure content stays within bounds */
+        }
+        /* Custom Alert styles */
+        #custom-alert-container {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000; /* Above everything */
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 90%;
+            max-width: 400px;
+        }
+        .custom-alert-item {
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .custom-alert-success {
+            background-color: #d1fae5; /* green-100 */
+            color: #065f46; /* green-800 */
+        }
+        .custom-alert-error {
+            background-color: #fee2e2; /* red-100 */
+            color: #991b1b; /* red-800 */
+        }
+        .custom-alert-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            line-height: 1;
+            cursor: pointer;
+            color: inherit;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .custom-alert-close:hover {
+            opacity: 1;
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6 flex flex-col h-[600px]">
-        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">AI Delivery Support</h1>
+<body class="bg-gray-100">
+    <!-- Main Application Container -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header/Navigation -->
+        <header class="bg-blue-600 text-white p-4 shadow-md">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold">AI E-commerce</h1>
+                <nav>
+                    <ul class="flex space-x-4">
+                        <li><button id="nav-products" class="px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors">Products</button></li>
+                        <li><button id="nav-cart" class="px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors">Cart (<span id="cart-count">0</span>)</button></li>
+                        <li><button id="nav-orders" class="px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors">My Orders</button></li>
+                        <li id="auth-links">
+                            <button id="nav-login" class="px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors">Login</button> /
+                            <button id="nav-register" class="px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors">Register</button>
+                        </li>
+                        <li id="user-info" class="hidden flex items-center space-x-2">
+                            <span id="user-name" class="font-semibold text-blue-200"></span>
+                            <button id="nav-logout" class="px-3 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 transition-colors">Logout</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
 
-        <!-- Chat messages display area -->
-        <div id="chat-container" class="flex-grow border border-gray-200 rounded-lg p-4 mb-4 space-y-4">
-            <!-- Messages will be appended here by JavaScript -->
-            <div class="flex justify-start">
-                <div class="bg-blue-100 text-blue-800 p-3 rounded-xl rounded-bl-none shadow-sm max-w-[75%]">
-                    Hello! How can I help you with your delivery today?
+        <!-- Custom Alert Container -->
+        <div id="custom-alert-container"></div>
+
+        <!-- Main Content Area -->
+        <main class="container mx-auto p-6 flex-grow">
+
+            <!-- Authentication Section -->
+            <section id="auth-section" class="bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto hidden">
+                <h2 id="auth-title" class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
+                <form id="auth-form" class="space-y-4">
+                    <div>
+                        <label for="auth-email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+                        <input type="email" id="auth-email" name="email" required
+                               class="shadow appearance-none border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div id="name-field" class="hidden">
+                        <label for="auth-name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
+                        <input type="text" id="auth-name" name="name"
+                               class="shadow appearance-none border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="auth-password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                        <input type="password" id="auth-password" name="password" required
+                               class="shadow appearance-none border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit" id="auth-submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full transition-colors">
+                        Login
+                    </button>
+                </form>
+                <p id="auth-message" class="text-center mt-4 text-red-500"></p>
+                <p class="text-center text-gray-600 mt-4">
+                    <button id="toggle-auth-mode" class="text-blue-600 hover:underline transition-colors">Don't have an account? Register here.</button>
+                </p>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products-section" class="hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Our Products</h2>
+                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Products will be loaded here by JavaScript -->
+                    <p class="text-center text-gray-600 col-span-full">Loading products...</p>
+                </div>
+            </section>
+
+            <!-- Product Detail Section -->
+            <section id="product-detail-section" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-2xl mx-auto">
+                <button id="back-to-products" class="text-blue-600 hover:underline mb-4 transition-colors">&larr; Back to Products</button>
+                <div id="product-detail-content">
+                    <!-- Product details will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Cart Section -->
+            <section id="cart-section" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Your Shopping Cart</h2>
+                <div id="cart-items" class="space-y-4">
+                    <!-- Cart items will be loaded here -->
+                    <p class="text-center text-gray-600">Your cart is empty.</p>
+                </div>
+                <div id="cart-summary" class="mt-8 pt-4 border-t border-gray-200 text-right">
+                    <p class="text-xl font-bold">Total: $<span id="cart-total">0.00</span></p>
+                    <div id="checkout-form-container" class="mt-4 hidden">
+                        <h3 class="text-xl font-semibold mb-2">Shipping Information</h3>
+                        <form id="checkout-form" class="space-y-4">
+                            <div>
+                                <label for="shipping-address" class="block text-gray-700 text-sm font-bold mb-2">Shipping Address:</label>
+                                <textarea id="shipping-address" name="shippingAddress" rows="3" required
+                                          class="shadow appearance-none border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                            <button type="submit" id="place-order-button"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full transition-colors">
+                                Place Order
+                            </button>
+                        </form>
+                        <p id="order-message" class="text-center mt-4 text-red-500"></p>
+                    </div>
+                    <button id="proceed-to-checkout"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline mt-4 transition-colors">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders-section" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">My Orders</h2>
+                <div id="order-list" class="space-y-4">
+                    <!-- Orders will be loaded here -->
+                    <p class="text-center text-gray-600">You have no orders yet.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Chatbot Bubble -->
+    <button id="chatbot-bubble" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+        </svg>
+    </button>
+
+    <!-- Chatbot Overlay Window -->
+    <div id="chatbot-overlay" class="hidden">
+        <div class="bg-blue-600 text-white p-4 rounded-t-xl flex justify-between items-center">
+            <h3 class="text-lg font-bold">AI Support Chat</h3>
+            <button id="chatbot-close-btn" class="text-white hover:text-blue-200 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div id="chat-messages" class="flex-grow p-4 space-y-4 overflow-y-auto">
+            <div class="message-wrapper">
+                <div class="ai-message-bubble">
+                    Hello! How can I help you with your delivery or product queries today?
                 </div>
             </div>
         </div>
-
-        <!-- Input area -->
-        <div class="flex items-center">
-            <input type="text" id="user-input" placeholder="Type your message..."
+        <div class="p-4 border-t border-gray-200 flex items-center">
+            <input type="text" id="chat-input" placeholder="Type your message..."
                    class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button id="send-button"
-                    class="ml-3 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <button id="chat-send-button"
+                    class="ml-3 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
                 Send
             </button>
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <!-- Main JavaScript for E-commerce Logic -->
+    <script src="ecom.js"></script>
 </body>
 </html>

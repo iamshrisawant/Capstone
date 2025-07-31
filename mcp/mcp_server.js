@@ -1,59 +1,45 @@
 // prototyping/mcp/mcp_server.js
 const express = require('express');
 const cors = require('cors');
-const neo4j = require('neo4j-driver'); // Neo4j driver for the MCP server
-require('dotenv').config({ path: '../.env' }); // Load environment variables from the root .env file
+const neo4j = require('neo4j-driver');
+require('dotenv').config({ path: '../.env' });
 
 const app = express();
-const PORT = process.env.MCP_PORT || 5000; // MCP will run on port 5000 by default
+const PORT = process.env.MCP_PORT || 5000;
 
-// Load Neo4j connection details from .env
 const URI = process.env.NEO4J_URI || 'bolt://localhost:7687';
 const USER = process.env.NEO4J_USER || 'neo4j';
 const PASSWORD = process.env.NEO4J_PASSWORD || 'password';
 
-// Create a Neo4j driver instance for the MCP server
 const driver = neo4j.driver(URI, neo4j.auth.basic(USER, PASSWORD));
 
 // Middleware
-app.use(cors()); // Enable CORS for cross-origin requests from the backend
-app.use(express.json()); // Parse JSON request bodies
-
-/**
- * Executes a Cypher query against the Neo4j database.
- * This is a helper function for the MCP.
- * @param {string} query The Cypher query string.
- * @param {object} params Optional parameters for the query.
- * @returns {Promise<Array<Object>>} A promise that resolves to an array of result records.
- */
-async function executeCypherInMcp(query, params = {}) {
-    const session = driver.session();
-    try {
-        const result = await session.run(query, params);
-        return result.records.map(record => record.toObject());
-    } catch (error) {
-        console.error("MCP: Neo4j query failed:", error);
-        throw error;
-    } finally {
-        await session.close();
-    }
-}
+app.use(cors());
+app.use(express.json());
 
 // Endpoint for running Cypher queries
 app.post('/run-neo4j-cypher', async (req, res) => {
-    const { tool, cypher } = req.body;
+    const { tool, cypher, params = {} } = req.body; // Extract params, default to empty object
 
     if (tool !== "run-neo4j-cypher" || !cypher) {
-        return res.status(400).json({ error: "Invalid request payload. Expected {tool: 'run-neo4j-cypher', cypher: '...'}" });
+        return res.status(400).json({ error: "Invalid request payload. Expected {tool: 'run-neo4j-cypher', cypher: '...', params: {...}}" });
     }
 
+    // Use executeRead for read-only queries, executeWrite for write queries.
+    // Since this endpoint is generic, we'll use a session and run.
+    // For more robust handling, you might have separate endpoints for read/write.
+    const session = driver.session();
     try {
-        console.log(`MCP: Executing Cypher query: ${cypher}`);
-        const result = await executeCypherInMcp(cypher);
-        res.json({ result });
+        console.log(`MCP: Executing Cypher query: ${cypher} with params:`, params);
+        const result = await session.run(cypher, params); // Pass params to session.run
+        // Convert Neo4j result records to a list of dictionaries
+        const records = result.records.map(record => record.toObject());
+        res.json({ result: records });
     } catch (error) {
-        console.error("MCP: Error processing /run-neo4j-cypher request:", error);
+        console.error("MCP: Error executing Cypher query:", error);
         res.status(500).json({ error: "Failed to execute Cypher query via MCP.", details: error.message });
+    } finally {
+        await session.close();
     }
 });
 
