@@ -1,0 +1,114 @@
+[
+  {
+    "userQuery": "Hello",
+    "llmPlan": null,
+    "dbResult": null,
+    "llmReply": "An unexpected error occurred. Please try again later.",
+    "humanReply": null,
+    "timestamp": "2025-07-30T17:10:09.453Z"
+  },
+  {
+    "userQuery": "Hello",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-30T17:13:44.523Z"
+  },
+  {
+    "userQuery": "Hello",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-30T17:35:33.117Z"
+  },
+  {
+    "userQuery": "Where's my order 11111?",
+    "llmPlan": {
+      "intent": "delivery_status",
+      "cypher": "MATCH (o:Order {id: '11111'}) RETURN o.status AS status, o.eta AS eta, o.item AS item"
+    },
+    "dbResult": null,
+    "llmReply": "I encountered an issue retrieving information from our database. Please try again in a moment or consider rephrasing your query.",
+    "humanReply": null,
+    "timestamp": "2025-07-30T17:35:47.811Z"
+  },
+  {
+    "userQuery": "11111",
+    "llmPlan": {
+      "intent": "delivery_status",
+      "cypher": "MATCH (o:Order {id: '11111'}) RETURN o.status AS status, o.eta AS eta, o.item AS item"
+    },
+    "dbResult": null,
+    "llmReply": "I encountered an issue retrieving information from our database. Please try again in a moment or consider rephrasing your query.",
+    "humanReply": null,
+    "timestamp": "2025-07-30T17:36:00.074Z"
+  },
+  {
+    "userQuery": "Hello",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-30T17:57:15.316Z"
+  },
+  {
+    "userQuery": "11111",
+    "llmPlan": {
+      "intent": "delivery_status",
+      "cypher": "MATCH (o:Order {id: '11111'}) RETURN o.status AS status, o.eta AS eta, o.item AS item"
+    },
+    "dbResult": null,
+    "llmReply": "I encountered an issue retrieving information from our database. Please try again in a moment or consider rephrasing your query.",
+    "humanReply": null,
+    "timestamp": "2025-07-30T17:57:20.414Z"
+  },
+  {
+    "userQuery": "Where's my order?",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": "I'm sorry, I don't understand 'cls'. Could you please rephrase your question or tell me what you're trying to do?",
+    "timestamp": "2025-07-30T17:57:34.672Z"
+  },
+  {
+    "userQuery": "cls",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": "To track your order, please provide your order ID. If you don't have it, I can look it up with your name and email address.",
+    "timestamp": "2025-07-30T17:57:42.913Z"
+  },
+  {
+    "userQuery": "11111",
+    "llmPlan": {
+      "intent": "order_details",
+      "cypher": "MATCH (o:Order {id: '11111'}) OPTIONAL MATCH (o)-[:PLACED_BY]->(c:Customer) RETURN o.id AS id, o.status AS status, o.eta AS eta, o.item AS item, c.name AS customerName"
+    },
+    "dbResult": null,
+    "llmReply": "I encountered an issue retrieving information from our database. Please try again in a moment or consider rephrasing your query.",
+    "humanReply": "couldn't find order 11111 in our system. Could you please double-check the order number? If it's correct, please provide the name or email associated with the order.",
+    "timestamp": "2025-07-30T18:15:28.495Z"
+  },
+  {
+    "userQuery": "What's my order?",
+    "llmPlan": {
+      "intent": "fallback"
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": "Hello! How can I assist you with your delivery today? Please provide your order number or a specific question.",
+    "timestamp": "2025-07-31T00:29:32.048Z"
+  }
+]

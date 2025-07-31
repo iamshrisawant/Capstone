@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Delivery Support</title>
+    <!-- Tailwind CSS CDN for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Inter font and basic layout */
+        body {
+            font-family: "Inter", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+        /* Ensure chat container scrolls properly */
+        #chat-container {
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6 flex flex-col h-[600px]">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">AI Delivery Support</h1>
+
+        <!-- Chat messages display area -->
+        <div id="chat-container" class="flex-grow border border-gray-200 rounded-lg p-4 mb-4 space-y-4">
+            <!-- Messages will be appended here by JavaScript -->
+            <div class="flex justify-start">
+                <div class="bg-blue-100 text-blue-800 p-3 rounded-xl rounded-bl-none shadow-sm max-w-[75%]">
+                    Hello! How can I help you with your delivery today?
+                </div>
+            </div>
+        </div>
+
+        <!-- Input area -->
+        <div class="flex items-center">
+            <input type="text" id="user-input" placeholder="Type your message..."
+                   class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="send-button"
+                    class="ml-3 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Send
+            </button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
