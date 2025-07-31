@@ -53,20 +53,22 @@
         }
         #chatbot-overlay {
             position: fixed;
-            bottom: 6rem; /* Adjust based on bubble height */
+            bottom: 6rem;
             right: 1.5rem;
-            width: 90%; /* Responsive width */
-            max-width: 400px; /* Max width for desktop */
-            height: 70%; /* Responsive height */
-            max-height: 600px; /* Max height */
+            width: 90%;
+            max-width: 400px;
+            height: 70%;
+            max-height: 600px;
             background-color: white;
-            border-radius: 0.75rem; /* rounded-xl */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                        0 4px 6px -2px rgba(0, 0, 0, 0.05);
             z-index: 999;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Ensure content stays within bounds */
+            overflow: hidden;
         }
+
         /* Custom Alert styles */
         #custom-alert-container {
             position: fixed;
@@ -234,7 +236,7 @@
     </div>
 
     <!-- Chatbot Bubble -->
-    <button id="chatbot-bubble" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-colors">
+    <button id="chatbot-bubble" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-colors" aria-label="Open Chatbot">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
         </svg>
@@ -244,7 +246,7 @@
     <div id="chatbot-overlay" class="hidden">
         <div class="bg-blue-600 text-white p-4 rounded-t-xl flex justify-between items-center">
             <h3 class="text-lg font-bold">AI Support Chat</h3>
-            <button id="chatbot-close-btn" class="text-white hover:text-blue-200 transition-colors">
+            <button id="chatbot-close-btn" class="text-white hover:text-blue-200 transition-colors" aria-label="Close Chatbot">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -269,5 +271,3 @@
 
     <!-- Main JavaScript for E-commerce Logic -->
     <script src="ecom.js"></script>
-</body>
-</html>

@@ -216,5 +216,82 @@
     "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
     "humanReply": null,
     "timestamp": "2025-07-31T04:43:11.001Z"
+  },
+  {
+    "userQuery": "Hello",
+    "llmPlan": {
+      "intent": "fallback",
+      "message": "I apologize, but I encountered an issue analyzing your request. Please try again later."
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T05:40:50.540Z"
+  },
+  {
+    "userQuery": "Tell me about Smart TV",
+    "llmPlan": {
+      "intent": "fallback",
+      "message": "I apologize, but I encountered an issue analyzing your request. Please try again later."
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T05:41:15.685Z"
+  },
+  {
+    "userQuery": "Sawant",
+    "llmPlan": {
+      "intent": "fallback",
+      "message": "Could not parse Gemini's planning response."
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T05:43:12.550Z"
+  },
+  {
+    "userQuery": "TV",
+    "llmPlan": {
+      "intent": "fallback",
+      "message": "Could not parse Gemini's planning response."
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T05:43:29.062Z"
+  },
+  {
+    "userQuery": "Coffee Maker",
+    "llmPlan": {
+      "intent": "fallback",
+      "message": "Could not parse Gemini's planning response."
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T05:43:39.409Z"
+  },
+  {
+    "userQuery": "Tell me about my cart.",
+    "llmPlan": {
+      "intent": "fallback",
+      "params": {}
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T05:47:08.087Z"
+  },
+  {
+    "userQuery": "Why is it pending?",
+    "llmPlan": {
+      "intent": "fallback",
+      "params": {}
+    },
+    "dbResult": null,
+    "llmReply": "I'm sorry, I cannot directly answer that question. I'm connecting you to a human support agent who can assist you further.",
+    "humanReply": null,
+    "timestamp": "2025-07-31T05:49:10.725Z"
   }
 ]
